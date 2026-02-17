@@ -855,7 +855,7 @@
         </div>
     </section>
 
-   <!-- БЛОК ОТЗЫВОВ С GOOGLE TABLES И МОДЕРАЦИЕЙ -->
+<!-- БЛОК ОТЗЫВОВ С GOOGLE TABLES И МОДЕРАЦИЕЙ -->
 <style>
     .reviews-block {
         padding: 80px 0;
@@ -1102,22 +1102,24 @@
 
         const TELEGRAM_TOKEN = '8594267696:AAF9reS3k7WykI47Gr3ZOyL3xQs16MJq0jI';
         const TELEGRAM_CHAT_ID = '1757823629';
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxhKND-Hd1ZJHDMdFKJYHfH84mLoIpirt3VXm4PgnBxNCXGMxX0bKhplhk-EgH0OtAcA/exec';
+        
+        // ⚠️ ТВОЯ НОВАЯ ССЫЛКА ⚠️
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxi8-HQuOpuqzMOKrDbE3-FrZjwH30kY4bULWVMTgmFMlzf2MrRDZlOCDBJBkOP-wLm/exec';
+        
+        // ССЫЛКА НА ТАБЛИЦУ (старая, рабочая)
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiAJTWpcy8pRsTykmvVMjMq2ip2ndMkhqOnLklEzs0qpKNloh-qe5FmB0omy5isP2FlYrNHt1VMxO7/pub?output=csv';
 
-        // Загрузка отзывов из Google Таблицы (только с статусом yes)
+        // Загрузка отзывов из Google Таблицы
         async function loadReviewsFromGoogle() {
             try {
                 const response = await fetch(CSV_URL);
                 const csvText = await response.text();
-                const rows = csvText.split('\n').slice(1); // Пропускаем заголовок
+                const rows = csvText.split('\n').slice(1);
                 reviewsGrid.innerHTML = '';
                 
-                // Проходим по всем строкам с конца (сначала новые)
                 for (let i = rows.length - 1; i >= 0; i--) {
                     if (!rows[i]) continue;
                     
-                    // Разбираем CSV (простой способ, но работает)
                     const row = rows[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
                     if (row && row.length >= 5) {
                         const date = row[0].replace(/"/g, '');
@@ -1126,14 +1128,12 @@
                         const text = row[3].replace(/"/g, '');
                         const status = row[4] ? row[4].replace(/"/g, '').toLowerCase().trim() : 'new';
                         
-                        // Показываем только одобренные отзывы
                         if (status === 'yes' || status === 'да' || status === 'опубликован') {
                             addReviewToPage(name, rating, text, date, false);
                         }
                     }
                 }
                 
-                // Если нет отзывов, показываем заглушку
                 if (reviewsGrid.children.length === 0) {
                     reviewsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #666;">Пока нет отзывов. Будьте первым!</div>';
                 }
@@ -1144,7 +1144,6 @@
             }
         }
 
-        // Запасные отзывы
         function loadDefaultReviews() {
             reviewsGrid.innerHTML = `
                 <div class="review-card">
@@ -1196,13 +1195,13 @@
                 });
             } catch (e) {}
 
-            // Отправка в Google Таблицу со статусом "new"
+            // Отправка в Google Таблицу с новой ссылкой
             try {
                 const formData = new URLSearchParams();
                 formData.append('name', name);
                 formData.append('rating', rating.value);
                 formData.append('text', text);
-                formData.append('status', 'new'); // Добавляем статус "new"
+                formData.append('status', 'new');
                 
                 await fetch(GOOGLE_SCRIPT_URL, { 
                     method: 'POST', 
@@ -1210,7 +1209,11 @@
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formData 
                 });
-            } catch (e) {}
+                
+                console.log('Отправлено в таблицу');
+            } catch (e) {
+                console.error('Ошибка отправки в таблицу:', e);
+            }
 
             showMessage('Спасибо! Отзыв отправлен на модерацию и появится после проверки', 'success');
             reviewForm.reset();
@@ -1251,7 +1254,6 @@
         }
 
         loadReviewsFromGoogle();
-        // Обновляем отзывы каждые 30 секунд (чтобы видеть изменения статуса)
         setInterval(loadReviewsFromGoogle, 30000);
     });
 </script>
@@ -1671,6 +1673,7 @@
 <!-- КОНЕЦ ЧАТА -->
 </body>
 </html>
+
 
 
 
