@@ -1335,23 +1335,23 @@
         <i class="fas fa-phone-alt"></i>
     </a>
 
-   <!-- ЧАТ С ОПЕРАТОРОМ (ПОЛНАЯ ВЕРСИЯ) -->
+  <!-- ЧАТ С ОПЕРАТОРОМ (ПОЛНАЯ ВЕРСИЯ) -->
 <style>
     .tg-chat-button {
         position: fixed;
-        bottom: 110px;
+        bottom: 120px;
         right: 30px;
         background: #28a8e9;
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        display: flex;
+        display: flex !important;
         align-items: center;
         justify-content: center;
         color: white;
         font-size: 28px;
         box-shadow: 0 10px 25px rgba(40, 168, 233, 0.5);
-        z-index: 9998;
+        z-index: 999999;
         transition: 0.3s;
         border: 2px solid white;
         animation: pulse-tg 2s infinite 1s;
@@ -1377,7 +1377,7 @@
         border-radius: 20px;
         border: 2px solid #28a8e9;
         box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        z-index: 9997;
+        z-index: 999998;
         display: none;
         overflow: hidden;
     }
@@ -1497,9 +1497,9 @@
 </style>
 
 <!-- Кнопка чата -->
-<div class="tg-chat-button" id="tgChatButton" title="Написать в Telegram">
+<a href="#" class="tg-chat-button" id="tgChatButton" title="Написать в Telegram">
     <i class="fab fa-telegram-plane"></i>
-</div>
+</a>
 
 <!-- Окно чата -->
 <div class="tg-chat-widget" id="tgChatWidget">
@@ -1647,6 +1647,7 @@
 <!-- КОНЕЦ ЧАТА -->
 </body>
 </html>
+
 
 
 
