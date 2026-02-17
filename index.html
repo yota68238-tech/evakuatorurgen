@@ -855,383 +855,407 @@
         </div>
     </section>
 
-    <!-- БЛОК ОТЗЫВОВ С GOOGLE TABLES -->
-    <style>
-        .reviews-block {
-            padding: 80px 0;
-            background: #0f1422;
-            scroll-margin-top: 50px;
-        }
-        .reviews-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .reviews-header h2 {
-            font-size: 42px;
-            font-weight: 800;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #fff 0%, #f97316 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-        }
-        .reviews-header p {
-            color: #aaa;
-            font-size: 18px;
-        }
+   <!-- БЛОК ОТЗЫВОВ С GOOGLE TABLES И МОДЕРАЦИЕЙ -->
+<style>
+    .reviews-block {
+        padding: 80px 0;
+        background: #0f1422;
+        scroll-margin-top: 50px;
+    }
+    .reviews-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .reviews-header h2 {
+        font-size: 42px;
+        font-weight: 800;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #fff 0%, #f97316 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 15px;
+    }
+    .reviews-header p {
+        color: #aaa;
+        font-size: 18px;
+    }
+    .reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-bottom: 60px;
+    }
+    .review-card {
+        background: #1a1f30;
+        border-radius: 20px;
+        padding: 25px;
+        border-left: 4px solid #f97316;
+        transition: 0.2s;
+    }
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(249, 115, 22, 0.2);
+    }
+    .review-stars {
+        color: #f97316;
+        font-size: 18px;
+        margin-bottom: 12px;
+        letter-spacing: 2px;
+    }
+    .review-stars i {
+        margin-right: 3px;
+    }
+    .review-text {
+        color: #ddd;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        font-style: italic;
+    }
+    .review-author {
+        color: #f97316;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .review-author i {
+        font-size: 20px;
+    }
+    .review-form-container {
+        background: #1a1f30;
+        border-radius: 30px;
+        padding: 40px;
+        max-width: 700px;
+        margin: 0 auto;
+        border: 1px solid #333;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .review-form-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .review-form-title span {
+        color: #f97316;
+    }
+    .review-form-sub {
+        text-align: center;
+        color: #aaa;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+    .rating-area {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        gap: 5px;
+        margin-bottom: 30px;
+    }
+    .rating-area input {
+        display: none;
+    }
+    .rating-area label {
+        font-size: 40px;
+        color: #555;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .rating-area label:hover,
+    .rating-area label:hover ~ label,
+    .rating-area input:checked ~ label {
+        color: #f97316;
+        text-shadow: 0 0 10px #f97316;
+    }
+    .form-group-custom {
+        margin-bottom: 20px;
+    }
+    .form-group-custom input,
+    .form-group-custom textarea {
+        width: 100%;
+        padding: 16px 20px;
+        background: #0b0f1c;
+        border: 1px solid #333;
+        border-radius: 16px;
+        color: #fff;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        transition: 0.2s;
+    }
+    .form-group-custom input:focus,
+    .form-group-custom textarea:focus {
+        border-color: #f97316;
+        outline: none;
+    }
+    .form-group-custom textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    .submit-review-btn {
+        background: #f97316;
+        color: #fff;
+        border: none;
+        padding: 18px 30px;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.2s;
+        width: 100%;
+        margin-top: 10px;
+        box-shadow: 0 10px 20px rgba(249,115,22,0.3);
+    }
+    .submit-review-btn:hover {
+        background: #fb923c;
+        transform: scale(1.02);
+    }
+    .submit-review-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .form-message {
+        text-align: center;
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 60px;
+        font-weight: 600;
+        display: none;
+    }
+    .form-message.success {
+        background: #00a86b;
+        color: #fff;
+        display: block;
+    }
+    .form-message.error {
+        background: #dc3545;
+        color: #fff;
+        display: block;
+    }
+    @media (max-width: 992px) {
         .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-bottom: 60px;
+            grid-template-columns: repeat(2, 1fr);
         }
-        .review-card {
-            background: #1a1f30;
-            border-radius: 20px;
-            padding: 25px;
-            border-left: 4px solid #f97316;
-            transition: 0.2s;
-        }
-        .review-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(249, 115, 22, 0.2);
-        }
-        .review-stars {
-            color: #f97316;
-            font-size: 18px;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-        }
-        .review-stars i {
-            margin-right: 3px;
-        }
-        .review-text {
-            color: #ddd;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-        .review-author {
-            color: #f97316;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .review-author i {
-            font-size: 20px;
+    }
+    @media (max-width: 700px) {
+        .reviews-grid {
+            grid-template-columns: 1fr;
         }
         .review-form-container {
-            background: #1a1f30;
-            border-radius: 30px;
-            padding: 40px;
-            max-width: 700px;
-            margin: 0 auto;
-            border: 1px solid #333;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            padding: 25px;
         }
-        .review-form-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .review-form-title span {
-            color: #f97316;
-        }
-        .review-form-sub {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        .rating-area {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            gap: 5px;
-            margin-bottom: 30px;
-        }
-        .rating-area input {
-            display: none;
-        }
-        .rating-area label {
-            font-size: 40px;
-            color: #555;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .rating-area label:hover,
-        .rating-area label:hover ~ label,
-        .rating-area input:checked ~ label {
-            color: #f97316;
-            text-shadow: 0 0 10px #f97316;
-        }
-        .form-group-custom {
-            margin-bottom: 20px;
-        }
-        .form-group-custom input,
-        .form-group-custom textarea {
-            width: 100%;
-            padding: 16px 20px;
-            background: #0b0f1c;
-            border: 1px solid #333;
-            border-radius: 16px;
-            color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            transition: 0.2s;
-        }
-        .form-group-custom input:focus,
-        .form-group-custom textarea:focus {
-            border-color: #f97316;
-            outline: none;
-        }
-        .form-group-custom textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        .submit-review-btn {
-            background: #f97316;
-            color: #fff;
-            border: none;
-            padding: 18px 30px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(249,115,22,0.3);
-        }
-        .submit-review-btn:hover {
-            background: #fb923c;
-            transform: scale(1.02);
-        }
-        .submit-review-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .form-message {
-            text-align: center;
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 60px;
-            font-weight: 600;
-            display: none;
-        }
-        .form-message.success {
-            background: #00a86b;
-            color: #fff;
-            display: block;
-        }
-        .form-message.error {
-            background: #dc3545;
-            color: #fff;
-            display: block;
-        }
-        @media (max-width: 992px) {
-            .reviews-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 700px) {
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
-            .review-form-container {
-                padding: 25px;
-            }
-        }
-    </style>
+    }
+</style>
 
-    <section class="reviews-block" id="reviews">
-        <div class="container">
-            <div class="reviews-header">
-                <h2>Отзывы наших клиентов</h2>
-                <p>Более 150 водителей доверили нам свой транспорт</p>
-            </div>
-
-            <div class="reviews-grid" id="reviewsGrid"></div>
-
-            <div class="review-form-container">
-                <div class="review-form-title">Оставьте <span>отзыв</span></div>
-                <div class="review-form-sub">Ваше мнение поможет нам стать лучше</div>
-                
-                <form id="reviewForm">
-                    <div class="rating-area">
-                        <input type="radio" id="star-5" name="rating" value="5">
-                        <label for="star-5" title="Отлично">★</label>
-                        <input type="radio" id="star-4" name="rating" value="4">
-                        <label for="star-4" title="Хорошо">★</label>
-                        <input type="radio" id="star-3" name="rating" value="3">
-                        <label for="star-3" title="Нормально">★</label>
-                        <input type="radio" id="star-2" name="rating" value="2">
-                        <label for="star-2" title="Плохо">★</label>
-                        <input type="radio" id="star-1" name="rating" value="1">
-                        <label for="star-1" title="Ужасно">★</label>
-                    </div>
-
-                    <div class="form-group-custom">
-                        <input type="text" id="reviewName" placeholder="Ваше имя (необязательно)">
-                    </div>
-
-                    <div class="form-group-custom">
-                        <textarea id="reviewText" placeholder="Напишите пару слов о вашем опыте..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-review-btn" id="submitReview">
-                        <i class="fas fa-paper-plane" style="margin-right: 8px;"></i>Отправить отзыв
-                    </button>
-
-                    <div id="formMessage" class="form-message"></div>
-                </form>
-            </div>
+<section class="reviews-block" id="reviews">
+    <div class="container">
+        <div class="reviews-header">
+            <h2>Отзывы наших клиентов</h2>
+            <p>Более 150 водителей доверили нам свой транспорт</p>
         </div>
-    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const reviewForm = document.getElementById('reviewForm');
-            const submitBtn = document.getElementById('submitReview');
-            const formMessage = document.getElementById('formMessage');
-            const reviewsGrid = document.getElementById('reviewsGrid');
+        <div class="reviews-grid" id="reviewsGrid"></div>
 
-            const TELEGRAM_TOKEN = '8594267696:AAF9reS3k7WykI47Gr3ZOyL3xQs16MJq0jI';
-            const TELEGRAM_CHAT_ID = '1757823629';
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxhKND-Hd1ZJHDMdFKJYHfH84mLoIpirt3VXm4PgnBxNCXGMxX0bKhplhk-EgH0OtAcA/exec';
-            const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiAJTWpcy8pRsTykmvVMjMq2ip2ndMkhqOnLklEzs0qpKNloh-qe5FmB0omy5isP2FlYrNHt1VMxO7/pub?output=csv';
+        <div class="review-form-container">
+            <div class="review-form-title">Оставьте <span>отзыв</span></div>
+            <div class="review-form-sub">Ваше мнение поможет нам стать лучше</div>
+            
+            <form id="reviewForm">
+                <div class="rating-area">
+                    <input type="radio" id="star-5" name="rating" value="5">
+                    <label for="star-5" title="Отлично">★</label>
+                    <input type="radio" id="star-4" name="rating" value="4">
+                    <label for="star-4" title="Хорошо">★</label>
+                    <input type="radio" id="star-3" name="rating" value="3">
+                    <label for="star-3" title="Нормально">★</label>
+                    <input type="radio" id="star-2" name="rating" value="2">
+                    <label for="star-2" title="Плохо">★</label>
+                    <input type="radio" id="star-1" name="rating" value="1">
+                    <label for="star-1" title="Ужасно">★</label>
+                </div>
 
-            async function loadReviewsFromGoogle() {
-                try {
-                    const response = await fetch(CSV_URL);
-                    const csvText = await response.text();
-                    const rows = csvText.split('\n').slice(1);
-                    reviewsGrid.innerHTML = '';
+                <div class="form-group-custom">
+                    <input type="text" id="reviewName" placeholder="Ваше имя (необязательно)">
+                </div>
+
+                <div class="form-group-custom">
+                    <textarea id="reviewText" placeholder="Напишите пару слов о вашем опыте..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-review-btn" id="submitReview">
+                    <i class="fas fa-paper-plane" style="margin-right: 8px;"></i>Отправить отзыв
+                </button>
+
+                <div id="formMessage" class="form-message"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const reviewForm = document.getElementById('reviewForm');
+        const submitBtn = document.getElementById('submitReview');
+        const formMessage = document.getElementById('formMessage');
+        const reviewsGrid = document.getElementById('reviewsGrid');
+
+        const TELEGRAM_TOKEN = '8594267696:AAF9reS3k7WykI47Gr3ZOyL3xQs16MJq0jI';
+        const TELEGRAM_CHAT_ID = '1757823629';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxhKND-Hd1ZJHDMdFKJYHfH84mLoIpirt3VXm4PgnBxNCXGMxX0bKhplhk-EgH0OtAcA/exec';
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiAJTWpcy8pRsTykmvVMjMq2ip2ndMkhqOnLklEzs0qpKNloh-qe5FmB0omy5isP2FlYrNHt1VMxO7/pub?output=csv';
+
+        // Загрузка отзывов из Google Таблицы (только с статусом yes)
+        async function loadReviewsFromGoogle() {
+            try {
+                const response = await fetch(CSV_URL);
+                const csvText = await response.text();
+                const rows = csvText.split('\n').slice(1); // Пропускаем заголовок
+                reviewsGrid.innerHTML = '';
+                
+                // Проходим по всем строкам с конца (сначала новые)
+                for (let i = rows.length - 1; i >= 0; i--) {
+                    if (!rows[i]) continue;
                     
-                    const startIndex = Math.max(0, rows.length - 9);
-                    for (let i = rows.length - 1; i >= startIndex; i--) {
-                        if (!rows[i]) continue;
+                    // Разбираем CSV (простой способ, но работает)
+                    const row = rows[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
+                    if (row && row.length >= 5) {
+                        const date = row[0].replace(/"/g, '');
+                        const name = row[1].replace(/"/g, '');
+                        const rating = parseInt(row[2].replace(/"/g, ''));
+                        const text = row[3].replace(/"/g, '');
+                        const status = row[4] ? row[4].replace(/"/g, '').toLowerCase().trim() : 'new';
                         
-                        const row = rows[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
-                        if (row && row.length >= 4) {
-                            const date = row[0].replace(/"/g, '');
-                            const name = row[1].replace(/"/g, '');
-                            const rating = parseInt(row[2].replace(/"/g, ''));
-                            const text = row[3].replace(/"/g, '');
+                        // Показываем только одобренные отзывы
+                        if (status === 'yes' || status === 'да' || status === 'опубликован') {
                             addReviewToPage(name, rating, text, date, false);
                         }
                     }
-                } catch (error) {
-                    console.error('Ошибка загрузки отзывов:', error);
-                    loadDefaultReviews();
-                }
-            }
-
-            function loadDefaultReviews() {
-                reviewsGrid.innerHTML = `
-                    <div class="review-card">
-                        <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <div class="review-text">«Приехали через 10 минут, хотя была ночь. Цену не накрутили, погрузили аккуратно.»</div>
-                        <div class="review-author"><i class="fas fa-user-circle"></i> Дмитрий</div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <div class="review-text">«Эвакуатор был через 15 минут. Вежливый водитель.»</div>
-                        <div class="review-author"><i class="fas fa-user-circle"></i> Елена</div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                        <div class="review-text">«Понадобился эвакуатор для мотоцикла. Всё чётко.»</div>
-                        <div class="review-author"><i class="fas fa-user-circle"></i> Максим</div>
-                    </div>
-                `;
-            }
-
-            reviewForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const rating = document.querySelector('input[name="rating"]:checked');
-                const name = document.getElementById('reviewName').value.trim() || 'Аноним';
-                const text = document.getElementById('reviewText').value.trim();
-
-                if (!rating) {
-                    showMessage('Пожалуйста, поставьте оценку', 'error');
-                    return;
-                }
-                if (!text) {
-                    showMessage('Напишите текст отзыва', 'error');
-                    return;
-                }
-
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-
-                const stars = '★'.repeat(parseInt(rating.value)) + '☆'.repeat(5 - parseInt(rating.value));
-                const message = `🔔 НОВЫЙ ОТЗЫВ\n👤 Имя: ${name}\n⭐ Оценка: ${rating.value}\n📝 ${text}`;
-
-                try {
-                    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-                    });
-                } catch (e) {}
-
-                try {
-                    const formData = new URLSearchParams();
-                    formData.append('name', name);
-                    formData.append('rating', rating.value);
-                    formData.append('text', text);
-                    await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
-                } catch (e) {}
-
-                showMessage('Спасибо! Отзыв отправлен', 'success');
-                addReviewToPage(name, rating.value, text, new Date().toLocaleDateString('ru-RU'), true);
-                reviewForm.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right: 8px;"></i>Отправить отзыв';
-            });
-
-            function showMessage(msg, type) {
-                formMessage.textContent = msg;
-                formMessage.className = 'form-message ' + type;
-                formMessage.style.display = 'block';
-                setTimeout(() => formMessage.style.display = 'none', 5000);
-            }
-
-            function addReviewToPage(name, rating, text, dateStr, prepend = true) {
-                const newCard = document.createElement('div');
-                newCard.className = 'review-card';
-                
-                let starsHTML = '';
-                for (let i = 1; i <= 5; i++) {
-                    starsHTML += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
                 }
                 
-                newCard.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <div class="review-stars">${starsHTML}</div>
-                        <span style="color: #666; font-size: 12px;">${dateStr}</span>
-                    </div>
-                    <div class="review-text">«${text}»</div>
-                    <div class="review-author"><i class="fas fa-user-circle"></i> ${name}</div>
-                `;
-                
-                if (prepend) reviewsGrid.prepend(newCard);
-                else reviewsGrid.appendChild(newCard);
-                
-                while (reviewsGrid.children.length > 9) {
-                    reviewsGrid.removeChild(reviewsGrid.lastChild);
+                // Если нет отзывов, показываем заглушку
+                if (reviewsGrid.children.length === 0) {
+                    reviewsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #666;">Пока нет отзывов. Будьте первым!</div>';
                 }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки отзывов:', error);
+                loadDefaultReviews();
+            }
+        }
+
+        // Запасные отзывы
+        function loadDefaultReviews() {
+            reviewsGrid.innerHTML = `
+                <div class="review-card">
+                    <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <div class="review-text">«Приехали через 10 минут, хотя была ночь. Цену не накрутили, погрузили аккуратно.»</div>
+                    <div class="review-author"><i class="fas fa-user-circle"></i> Дмитрий</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <div class="review-text">«Эвакуатор был через 15 минут. Вежливый водитель.»</div>
+                    <div class="review-author"><i class="fas fa-user-circle"></i> Елена</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    <div class="review-text">«Понадобился эвакуатор для мотоцикла. Всё чётко.»</div>
+                    <div class="review-author"><i class="fas fa-user-circle"></i> Максим</div>
+                </div>
+            `;
+        }
+
+        reviewForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const rating = document.querySelector('input[name="rating"]:checked');
+            const name = document.getElementById('reviewName').value.trim() || 'Аноним';
+            const text = document.getElementById('reviewText').value.trim();
+
+            if (!rating) {
+                showMessage('Пожалуйста, поставьте оценку', 'error');
+                return;
+            }
+            if (!text) {
+                showMessage('Напишите текст отзыва', 'error');
+                return;
             }
 
-            loadReviewsFromGoogle();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+
+            // Отправка в Telegram
+            const stars = '★'.repeat(parseInt(rating.value)) + '☆'.repeat(5 - parseInt(rating.value));
+            const message = `🔔 НОВЫЙ ОТЗЫВ (требует модерации)\n👤 Имя: ${name}\n⭐ Оценка: ${rating.value}\n📝 ${text}\n\nЗайди в Google Таблицу и поставь статус "yes", чтобы опубликовать.`;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+                });
+            } catch (e) {}
+
+            // Отправка в Google Таблицу со статусом "new"
+            try {
+                const formData = new URLSearchParams();
+                formData.append('name', name);
+                formData.append('rating', rating.value);
+                formData.append('text', text);
+                formData.append('status', 'new'); // Добавляем статус "new"
+                
+                await fetch(GOOGLE_SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData 
+                });
+            } catch (e) {}
+
+            showMessage('Спасибо! Отзыв отправлен на модерацию и появится после проверки', 'success');
+            reviewForm.reset();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right: 8px;"></i>Отправить отзыв';
         });
-    </script>
+
+        function showMessage(msg, type) {
+            formMessage.textContent = msg;
+            formMessage.className = 'form-message ' + type;
+            formMessage.style.display = 'block';
+            setTimeout(() => formMessage.style.display = 'none', 5000);
+        }
+
+        function addReviewToPage(name, rating, text, dateStr, prepend = true) {
+            const newCard = document.createElement('div');
+            newCard.className = 'review-card';
+            
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                starsHTML += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+            }
+            
+            newCard.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <div class="review-stars">${starsHTML}</div>
+                    <span style="color: #666; font-size: 12px;">${dateStr}</span>
+                </div>
+                <div class="review-text">«${text}»</div>
+                <div class="review-author"><i class="fas fa-user-circle"></i> ${name}</div>
+            `;
+            
+            if (prepend) {
+                reviewsGrid.prepend(newCard);
+            } else {
+                reviewsGrid.appendChild(newCard);
+            }
+        }
+
+        loadReviewsFromGoogle();
+        // Обновляем отзывы каждые 30 секунд (чтобы видеть изменения статуса)
+        setInterval(loadReviewsFromGoogle, 30000);
+    });
+</script>
+<!-- КОНЕЦ БЛОКА ОТЗЫВОВ -->
 
     <!-- ФУТЕР -->
     <footer class="footer" id="order">
@@ -1647,6 +1671,7 @@
 <!-- КОНЕЦ ЧАТА -->
 </body>
 </html>
+
 
 
 
